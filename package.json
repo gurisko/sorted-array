@@ -1,0 +1,28 @@
+{
+  "name": "@gurisko/sorted-array",
+  "version": "0.1.0",
+  "description": "",
+  "repository": "https://github.com/gurisko/sorted-array",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "mocha --opts tests/mocha.opts tests/**/*.spec.ts",
+    "prepublish": "npm run build",
+    "build": "shx rm -rf lib && tsc -p . && shx mv lib/src/** lib/ && shx rm -fr lib/src"
+  },
+  "author": "Matus Gura",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^3.5.2",
+    "@types/mocha": "^2.2.41",
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0",
+    "mocha-clean": "^1.0.0",
+    "shx": "^0.2.2",
+    "ts-node": "^2.0.0",
+    "typescript": "^2.2.1"
+  }
+}
