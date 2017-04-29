@@ -1,6 +1,6 @@
 import 'mocha';
 import { assert } from 'chai';
-import { SortedArray } from '../src';
+import SortedArray from '../src';
 
 describe('SortedArray', () => {
   let arr = new SortedArray();
