@@ -1,6 +1,6 @@
 {
   "name": "@gurisko/sorted-array",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "",
   "repository": "https://github.com/gurisko/sorted-array",
   "main": "./lib/index.js",
