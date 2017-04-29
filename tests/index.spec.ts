@@ -30,6 +30,14 @@ describe('SortedArray', () => {
     });
   });
 
+  describe('has', () => {
+    it('returns correct result', () => {
+      arr.insert([0, 5, 10]);
+      assert.equal(arr.has(5), true);
+      assert.equal(arr.has(2), false);
+    });
+  });
+
   describe('insert', () => {
     it('adds a number', () => {
       assert.equal(arr.length, 0);
@@ -117,6 +125,16 @@ describe('SortedArray', () => {
     it('removes multiple elements', () => {
       arr.insert([0, 5, 5, 10]);
       assert.deepEqual(arr.removeByValue(5).toArray(), [0, 10]);
+    });
+  });
+
+  describe('eq', () => {
+    it('returns empty array', () => {
+      assert.deepEqual(arr.eq(0).toArray(), []);
+    });
+    it('returns correct result', () => {
+      arr.insert([0, 5, 5, 10]);
+      assert.deepEqual(arr.eq(5).toArray(), [5, 5]);
     });
   });
 
@@ -270,6 +288,19 @@ describe('SortedArray with objects', () => {
       assert.deepEqual(arr.removeByValue(5).toArray(), [
         { id: 0, args: 2 },
         { id: 10, args: 1 }
+      ]);
+    });
+  });
+
+  describe('eq', () => {
+    it('returns empty array', () => {
+      assert.deepEqual(arr.eq(0).toArray(), []);
+    });
+    it('returns correct result', () => {
+      arr.insert(obj);
+      assert.deepEqual(arr.eq(5).toArray(), [
+        { id: 5, args: 0 },
+        { id: 5, args: 3 }
       ]);
     });
   });

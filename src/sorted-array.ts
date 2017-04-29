@@ -3,6 +3,11 @@
  * @copyright © 2017 Matus Gura
  */
 
+interface IEqualElements {
+  first: number,
+  length: number
+}
+
 export class SortedArray<T> {
   protected items: T[];
   protected key: string;
@@ -43,29 +48,15 @@ export class SortedArray<T> {
     return this;
   }
 
-  public removeByValue(value: string | number | boolean | T): SortedArray<T> {
-    const element = this.prepareComparableValue(value);
+  public removeByValue(value: any): SortedArray<T> {
+    const found: IEqualElements = this.getEqual(value);
 
-    let firstOccurrence: number = null;
-    let numberOfEqualValues = 0;
-    let index = this.greaterThan(element, true);
-
-    if (index === -1) {
+    if (found.length === 0) {
       return this;
     }
 
-    while (index < this.items.length) {
-      if (this.cmp(this.get(index), element) === 0) {
-        if (firstOccurrence === null) {
-          firstOccurrence = index;
-        }
-        numberOfEqualValues += 1;
-      } else {
-        break;
-      }
-      index += 1;
-    }
-    this.items.splice(firstOccurrence, numberOfEqualValues);
+    this.items.splice(found.first, found.length);
+
     return this;
   }
 
@@ -92,6 +83,17 @@ export class SortedArray<T> {
     }
 
     return -1;
+  }
+
+  public has(value: any): boolean {
+    return this.search(value) !== -1;
+  }
+
+  public eq(value: any): SortedArray<T> {
+    const found: IEqualElements = this.getEqual(value);
+    const result = new SortedArray(this.key, this.cmp);
+    result.insert((found.length === 0) ? [] : this.items.slice(found.first, found.first + found.length));
+    return result;
   }
 
   public gt(value: any): SortedArray<T> {
@@ -135,7 +137,32 @@ export class SortedArray<T> {
     return this.items.toString();
   }
 
-  protected greaterThan(value: any, orEqual: boolean = false): number {
+  private getEqual(value: any): IEqualElements {
+    const element = this.prepareComparableValue(value);
+    const result: IEqualElements = { first: -1, length: 0 };
+
+    let index = this.search(element);
+    if (index === -1) {
+      return result;
+    }
+
+    result.first = index++;
+    let numberOfEqualValues = 1;
+
+    while (index < this.items.length) {
+      if (this.cmp(this.get(index), element) === 0) {
+        numberOfEqualValues += 1;
+      } else {
+        break;
+      }
+      index += 1;
+    }
+
+    result.length = numberOfEqualValues;
+    return result;
+  }
+
+  private greaterThan(value: any, orEqual: boolean = false): number {
     const element = this.prepareComparableValue(value);
 
     let middle: number;
@@ -156,7 +183,7 @@ export class SortedArray<T> {
     return (max + 1 === this.items.length) ? -1 : max + 1;
   }
 
-  protected lessThan(value: any, orEqual: boolean = false): number {
+  private lessThan(value: any, orEqual: boolean = false): number {
     const element = this.prepareComparableValue(value);
 
     let middle: number;
