@@ -13,10 +13,19 @@ export class SortedArray<T> {
   protected key: string;
   protected cmp: (left: T, right: T) => number;
 
-  constructor(key: string = null, cmp?: (left: T, right: T) => number) {
+  constructor(arg?: string | ((left: T, right: T) => number)) {
     this.items = [];
-    this.key = key;
-    this.cmp = cmp || (this.key ? this.objectComparison : this.defaultComparison);
+    const type = typeof arg;
+    if (type === 'string') {
+      this.key = arg as string;
+      this.cmp = this.objectComparison;
+    } else if (type === 'function') {
+      this.key = null;
+      this.cmp = arg as ((left: T, right: T) => number);
+    } else {
+      this.key = null;
+      this.cmp = this.defaultComparison;
+    }
   }
 
   get length(): number {
@@ -91,35 +100,35 @@ export class SortedArray<T> {
 
   public eq(value: any): SortedArray<T> {
     const found: IEqualElements = this.getEqual(value);
-    const result = new SortedArray(this.key, this.cmp);
+    const result = new SortedArray(this.key || this.cmp);
     result.insert((found.length === 0) ? [] : this.items.slice(found.first, found.first + found.length));
     return result;
   }
 
   public gt(value: any): SortedArray<T> {
     const index = this.greaterThan(value);
-    const result = new SortedArray(this.key, this.cmp);
+    const result = new SortedArray(this.key || this.cmp);
     result.insert((index < 0) ? [] : this.items.slice(index));
     return result;
   }
 
   public lt(value: any): SortedArray<T> {
     const index = this.lessThan(value);
-    const result = new SortedArray(this.key, this.cmp);
+    const result = new SortedArray(this.key || this.cmp);
     result.insert((index < 0) ? [] : this.items.slice(0, index + 1));
     return result;
   }
 
   public gte(value: any): SortedArray<T> {
     const index = this.greaterThan(value, true);
-    const result = new SortedArray(this.key, this.cmp);
+    const result = new SortedArray(this.key || this.cmp);
     result.insert((index < 0) ? [] : this.items.slice(index));
     return result;
   }
 
   public lte(value: any): SortedArray<T> {
     const index = this.lessThan(value, true);
-    const result = new SortedArray(this.key, this.cmp);
+    const result = new SortedArray(this.key || this.cmp);
     result.insert((index < 0) ? [] : this.items.slice(0, index + 1));
     return result;
   }

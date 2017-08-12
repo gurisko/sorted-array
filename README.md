@@ -11,9 +11,7 @@ npm install @gurisko/sorted-array
 
 ## API
 
-#### `new SortedArray()`
-
-#### `new SortedArray([key], [compare])`
+#### `new SortedArray([key|compareFn])`
 
 #### `arr.insert([element1[, ...[, elementN]]])`
 
