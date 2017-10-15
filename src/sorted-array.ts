@@ -12,7 +12,6 @@ export class SortedArray<T> {
   protected items: T[];
   protected key: string;
   protected cmp: (left: T, right: T) => number;
-  private isCustomFunction: boolean;
 
   constructor(arg?: string | ((left: T, right: T) => number)) {
     this.items = [];
@@ -20,33 +19,17 @@ export class SortedArray<T> {
     if (type === 'string') {
       this.key = arg as string;
       this.cmp = this.objectComparison;
-      this.isCustomFunction = false;
     } else if (type === 'function') {
       this.key = null;
       this.cmp = arg as ((left: T, right: T) => number);
-      this.isCustomFunction = true;
     } else {
       this.key = null;
       this.cmp = this.defaultComparison;
-      this.isCustomFunction = false;
     }
   }
 
   get length(): number {
     return this.items.length;
-  }
-
-  set cmpKey(newKey: string) {
-    if (this.isCustomFunction) {
-      throw new Error('Cannot change key when custom function is used');
-    }
-    if (newKey && newKey.length > 0) {
-      this.key = newKey;
-      this.cmp = this.objectComparison;
-    } else {
-      this.key = null;
-      this.cmp = this.defaultComparison;
-    }
   }
 
   public get(index: number): T {
