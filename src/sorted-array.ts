@@ -43,7 +43,7 @@ export class SortedArray<T> {
 
     if (this.items.length === 0) {
       this.items = toInsert.sort(this.cmp.bind(this));
-      return;
+      return this;
     }
 
     toInsert.forEach((element) => {
