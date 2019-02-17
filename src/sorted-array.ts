@@ -1,6 +1,6 @@
 /**
  * @file Sorted array abstract data type.
- * @copyright © 2017 Matus Gura
+ * @copyright © 2017-2019 Matus Gura
  */
 
 interface IEqualElements {
